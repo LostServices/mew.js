@@ -1,6 +1,6 @@
 const WebSocketServer = require('websocket').server;
 const http = require('http');
-const os = require('os');
+const readline = require('readline');
 
 const server = http.createServer((request, response) => {});
 
@@ -9,7 +9,35 @@ const wsServer = new WebSocketServer({
   autoAcceptConnections: false,
 });
 
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 const connections = [];
+
+let port = ''; // Porta predefinita vuota
+
+rl.question('Insert the port: ', (input) => {
+    // Esegui una verifica sull'input per assicurarti che sia un numero di porta valido
+    const parsedPort = parseInt(input);
+
+    if (!isNaN(parsedPort) && parsedPort >= 0 && parsedPort <= 65535) {
+        // L'input è una porta valida
+        port = parsedPort;
+        console.log(`Port set to ${port}`);
+    } else {
+        // L'input non è una porta valida
+        console.log('Invalid port. Using the default port.');
+    }
+
+    // Inizia ad ascoltare il server WebSocket sulla porta selezionata
+    server.listen(port, () => {
+        console.log(`WebSocket server listening on port ${port}`);
+    });
+
+    rl.close(); // Chiudi l'interfaccia readline dopo aver ottenuto l'input
+});
 
 wsServer.on('request', (request) => {
     const connection = request.accept('echo-protocol', request.origin);
@@ -42,11 +70,3 @@ wsServer.on('request', (request) => {
         }
     });
 });
-
-const ipAddress = 'Ur Ip'; // Sostituisci con l'indirizzo IP del tuo server Wi-Fi
-
-server.listen(4444, ipAddress, () => {
-  console.log(`WebSocket server listening on IP address ${ipAddress} port 4444`);
-});
-
-
