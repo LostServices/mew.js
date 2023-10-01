@@ -1,0 +1,17 @@
+{
+  "name": "lolaws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mew [WS].js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "http": "^0.0.1-security",
+    "websocket": "^1.0.34",
+    "ws": "^8.14.2"
+  }
+}
