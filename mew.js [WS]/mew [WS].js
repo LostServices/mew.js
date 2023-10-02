@@ -16,27 +16,26 @@ const rl = readline.createInterface({
 
 const connections = [];
 
-let port = ''; // Porta predefinita vuota
+let port = '';
 
 rl.question('Insert the port: ', (input) => {
-    // Esegui una verifica sull'input per assicurarti che sia un numero di porta valido
+
     const parsedPort = parseInt(input);
 
     if (!isNaN(parsedPort) && parsedPort >= 0 && parsedPort <= 65535) {
-        // L'input è una porta valida
+
         port = parsedPort;
         console.log(`Port set to ${port}`);
     } else {
-        // L'input non è una porta valida
+
         console.log('Invalid port. Using the default port.');
     }
 
-    // Inizia ad ascoltare il server WebSocket sulla porta selezionata
     server.listen(port, () => {
         console.log(`WebSocket server listening on port ${port}`);
     });
 
-    rl.close(); // Chiudi l'interfaccia readline dopo aver ottenuto l'input
+    rl.close();
 });
 
 wsServer.on('request', (request) => {
