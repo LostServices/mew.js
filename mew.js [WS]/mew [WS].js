@@ -27,7 +27,7 @@ rl.question('Insert the port: ', (input) => {
         port = parsedPort;
         console.log(`Port set to ${port}`);
     } else {
-
+        port = '8888';
         console.log('Invalid port. Using the default port.');
     }
 

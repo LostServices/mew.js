@@ -101,9 +101,11 @@ function handleUserInput(input) {
         case 'help':
             console.clear();
             console.log('\n');
+            console.log(chalk.rgb(252, 3, 132).bold('                                           @Root'))
             console.log(chalk.rgb(255, 182, 193).bold('                                           connect {ip} {port}  '));
             console.log(chalk.rgb(255, 182, 193).bold('                                           nameset      '));
-            console.log(chalk.rgb(255, 182, 193).bold('                                           exit      '));
+            console.log(chalk.rgb(255, 182, 193).bold('                                           exit      \n'));
+            console.log(chalk.rgb(252, 3, 132).bold('                                           @Chat'))
             console.log(chalk.rgb(255, 182, 193).bold('                                           /cls     '));
             console.log(chalk.rgb(255, 182, 193).bold('                                           /disconnect      '));
             console.log('\n');
