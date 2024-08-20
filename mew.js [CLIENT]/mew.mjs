@@ -1,9 +1,14 @@
-const readline = require('readline');
-const chalk = require('chalk');
-const { connect } = require('http2');
-const WebSocketClient = require('websocket').client;
+import readline from 'readline';
+import chalk from 'chalk';
+import pkg from 'websocket';
+
+const { client: WebSocketClient } = pkg;
 const client = new WebSocketClient();
-const console = require('console');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 let Name = '';
 let connection;
@@ -12,32 +17,25 @@ let chatEnabled = false;
 const startTime = Date.now();
 
 function updateConsoleTitle() {
-  const currentTime = Date.now();
-  const elapsedTime = currentTime - startTime;
-  const seconds = Math.floor(elapsedTime / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - startTime;
+    const seconds = Math.floor(elapsedTime / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
 
-  const title = `Mew.js | User: ${Name} | Uptime: ${hours}:${minutes % 60}:${seconds % 60}`;
+    const title = `Mew.js | User: ${Name} | Uptime: ${hours}:${minutes % 60}:${seconds % 60}`;
 
-  process.stdout.write(`\x1b]0;${title}\x07`);
+    process.stdout.write(`\x1b]0;${title}\x07`);
 }
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+}
 
 function validateInput(input) {
     const specialChars = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\|]/;
     return !specialChars.test(input);
 }
-
-const connections = [];
 
 function Main() {
     console.clear();
@@ -73,14 +71,13 @@ async function askForInput() {
         rl.prompt();
         rl.on('line', (input) => {
             resolve(input);
-            if (input == '/disconnect') {
+            if (input === '/disconnect') {
                 if (connection && connection.connected) {
                     connection.close();
                 }
                 chatEnabled = false;
             }
-            if(input == '/cls')
-            {
+            if(input === '/cls') {
                 console.clear();
             }
         });
@@ -101,11 +98,11 @@ function handleUserInput(input) {
         case 'help':
             console.clear();
             console.log('\n');
-            console.log(chalk.rgb(252, 3, 132).bold('                                           @Root'))
+            console.log(chalk.rgb(252, 3, 132).bold('                                           @Root'));
             console.log(chalk.rgb(255, 182, 193).bold('                                           connect {ip} {port}  '));
             console.log(chalk.rgb(255, 182, 193).bold('                                           nameset      '));
             console.log(chalk.rgb(255, 182, 193).bold('                                           exit      \n'));
-            console.log(chalk.rgb(252, 3, 132).bold('                                           @Chat'))
+            console.log(chalk.rgb(252, 3, 132).bold('                                           @Chat'));
             console.log(chalk.rgb(255, 182, 193).bold('                                           /cls     '));
             console.log(chalk.rgb(255, 182, 193).bold('                                           /disconnect      '));
             console.log('\n');
@@ -166,7 +163,7 @@ function handleUserInput(input) {
 
                     sleep(2000).then(() => {
                         console.clear();
-                        chat(connection);
+                        chat();
                     });
                 });
 
