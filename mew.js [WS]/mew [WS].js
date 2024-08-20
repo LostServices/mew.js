@@ -2,7 +2,10 @@ const WebSocketServer = require('websocket').server;
 const http = require('http');
 const readline = require('readline');
 
-const server = http.createServer((request, response) => {});
+const server = http.createServer((request, response) => {
+    response.writeHead(404);
+    response.end();
+});
 
 const wsServer = new WebSocketServer({
   httpServer: server,
@@ -19,15 +22,13 @@ const connections = [];
 let port = '';
 
 rl.question('Insert the port: ', (input) => {
-
     const parsedPort = parseInt(input);
 
     if (!isNaN(parsedPort) && parsedPort >= 0 && parsedPort <= 65535) {
-
         port = parsedPort;
         console.log(`Port set to ${port}`);
     } else {
-        port = '8888';
+        port = 8888;
         console.log('Invalid port. Using the default port.');
     }
 
@@ -43,20 +44,19 @@ wsServer.on('request', (request) => {
 
     connections.push(connection);
 
+    console.log('New connection accepted.');
+
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
             const messageText = message.utf8Data;
-            if (messageText.startsWith('Name: ')) {
-                const name = messageText.substring(6);
-            } else {
-                console.log(`${messageText}`);
 
-                connections.forEach((conn) => {
-                    if (conn !== connection) {
-                        conn.sendUTF(messageText);
-                    }
-                });
-            }
+            console.log(`Received: ${messageText}`);
+
+            connections.forEach((conn) => {
+                if (conn !== connection) {
+                    conn.sendUTF(messageText);
+                }
+            });
         }
     });
 
